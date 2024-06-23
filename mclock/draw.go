@@ -1,8 +1,9 @@
 package main
 
 import (
-	_ "tinygo.org/x/drivers"
 	"os"
+
+	_ "tinygo.org/x/drivers"
 )
 
 func main() {

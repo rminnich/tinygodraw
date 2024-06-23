@@ -3,8 +3,8 @@
 package main
 
 import (
-	         "tinygo.org/x/drivers"
-       "tinygo.org/x/tinydraw/examples/initdisplay"
+	"tinygo.org/x/drivers"
+	"tinygo.org/x/tinydraw/examples/initdisplay"
 )
 
 type displayer drivers.Displayer
