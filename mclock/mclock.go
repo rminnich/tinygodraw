@@ -110,7 +110,7 @@ var (
 // The API is pairs of points, not Points, so that's a small change.
 func xlate(display displayer, in []int16) []int16 {
 	out := make([]int16, len(in))
-	for i := range out {
+	for i := 0; i < len(out)-2; i += 2 {
 		out[i] = int16(offx + (dia*(in[i])+210)/420)
 		out[i+1] = int16(offy + (dia*(480-in[i+1])+210)/420)
 	}
@@ -123,10 +123,10 @@ func fillpoly(display displayer, color color.RGBA, points ...int16) {
 
 	np := len(points)
 
-	if len(points) < 4 {
-		log.Printf("fillpoly: only %d points", len(points))
+	if np < 4 {
+		log.Printf("fillpoly: only %d points", np)
 	}
-	for i := range points[:np-2] {
+	for i := 0; i < np-4; i += 4 {
 		x0, y0, x1, y1 := points[i], points[i+1], points[i+2], points[i+3]
 		tinydraw.Line(display, x0, y0, x1, y1, color)
 
@@ -151,7 +151,7 @@ func mypoly(display displayer, p []int16, color color.RGBA) {
 func arm(display displayer, p []int16, angle float64) []int16 {
 
 	out := make([]int16, len(p))
-	for i := range out {
+	for i := range out[:len(out)-1] {
 		cosp := math.Cos(math.Pi * angle / 180.0)
 		sinp := math.Sin(math.Pi * angle / 180.0)
 		out[i] = int16(float64(p[i])*cosp + float64(p[i+1])*sinp + 210.5)

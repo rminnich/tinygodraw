@@ -4,6 +4,7 @@ package main
 
 import (
 	"image/color"
+	"log"
 	"os"
 )
 
@@ -11,17 +12,18 @@ type displayer struct {
 	f *os.File
 }
 
-func new(f *os.File) displayer {
-	return displayer{f: f}
+func new() displayer {
+	return displayer{f: os.Stdout}
 }
 
 func (d displayer) Display() error {
-	panic("here")
+	log.Printf("Display")
+	return nil
 }
 
 func (d displayer) Size() (x, y int16) {
 	return 1024, 1024
 }
 func (d displayer) SetPixel(x, y int16, c color.RGBA) {
-	panic("setpixel")
+	log.Printf("Set (%d, %d) to %v", x, y, c)
 }
