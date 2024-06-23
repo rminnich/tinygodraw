@@ -26,7 +26,6 @@ import (
 	"math"
 	"time"
 
-	"tinygo.org/x/drivers"
 	"tinygo.org/x/tinydraw"
 )
 
@@ -109,7 +108,7 @@ var (
 )
 
 // The API is pairs of points, not Points, so that's a small change.
-func xlate(display drivers.Displayer, in []int16) []int16 {
+func xlate(display displayer, in []int16) []int16 {
 	out := make([]int16, len(in))
 	for i := range out {
 		out[i] = int16(offx + (dia*(in[i])+210)/420)
@@ -119,7 +118,7 @@ func xlate(display drivers.Displayer, in []int16) []int16 {
 }
 
 // let's be a bit gross about this. Just draw the lines for now.
-func fillpoly(display drivers.Displayer, color color.RGBA, points ...int16) {
+func fillpoly(display displayer, color color.RGBA, points ...int16) {
 	// TODO: verify len
 
 	np := len(points)
@@ -134,12 +133,12 @@ func fillpoly(display drivers.Displayer, color color.RGBA, points ...int16) {
 	}
 }
 
-func myfill(display drivers.Displayer, p []int16, color color.RGBA) { // , Image* color)
+func myfill(display displayer, p []int16, color color.RGBA) { // , Image* color)
 	out := xlate(display, p)
 	fillpoly(display, color, out...)
 }
 
-func mypoly(display drivers.Displayer, p []int16, color color.RGBA) {
+func mypoly(display displayer, p []int16, color color.RGBA) {
 	out := xlate(display, p)
 	//	var b int
 	//	if dia > DBIG {
@@ -149,7 +148,7 @@ func mypoly(display drivers.Displayer, p []int16, color color.RGBA) {
 	//fillpoly(display, , out, np, Enddisc, Enddisc, b, color, ZP)
 }
 
-func arm(display drivers.Displayer, p []int16, angle float64) []int16 {
+func arm(display displayer, p []int16, angle float64) []int16 {
 
 	out := make([]int16, len(p))
 	for i := range out {
@@ -161,14 +160,14 @@ func arm(display drivers.Displayer, p []int16, angle float64) []int16 {
 	return out
 }
 
-func polyarm(display drivers.Displayer, p []int16, color color.RGBA, angle float64) {
+func polyarm(display displayer, p []int16, color color.RGBA, angle float64) {
 	tmp := arm(display, p, angle)
 	out := xlate(display, tmp)
 	mypoly(display, out, color)
 	//poly(screen, out, np, Enddisc, Enddisc, dia>DBIG?1:0, color, ZP);
 }
 
-func fillarm(display drivers.Displayer, p []int16, color color.RGBA, angle float64) {
+func fillarm(display displayer, p []int16, color color.RGBA, angle float64) {
 
 	tmp := arm(display, p, angle)
 	out := xlate(display, tmp)
@@ -176,7 +175,7 @@ func fillarm(display drivers.Displayer, p []int16, color color.RGBA, angle float
 	//	fillpoly(screen, out, np, ~0, color, ZP);
 }
 
-func arms(display drivers.Displayer, anghr, angmin float64) {
+func arms(display displayer, anghr, angmin float64) {
 	blk := color.RGBA{A: 255}
 	wht := color.RGBA{G: 255, B: 255, R: 255, A: 255}
 	/* arms */
@@ -197,7 +196,7 @@ func arms(display drivers.Displayer, anghr, angmin float64) {
 	polyarm(display, handm4[:2], blk, angmin)
 }
 
-func redraw(display drivers.Displayer) {
+func redraw(display displayer) {
 	blk := color.RGBA{A: 255}
 	red := color.RGBA{R: 255, A: 255}
 	wht := color.RGBA{G: 255, B: 255, R: 255, A: 255}

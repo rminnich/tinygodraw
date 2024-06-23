@@ -1,5 +1,5 @@
 build:
-	tinygo build -target pyportal 
+	tinygo build -o mclock.uf2 -target pyportal 
 flash:
 	tinygo flash -target pyportal 
 mon:

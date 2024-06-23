@@ -1,15 +1,12 @@
-// draw pjw on a display. For more info: search pjw images bell labs
 package main
-
-//go:generate go run pjw.go
 
 import (
 	_ "tinygo.org/x/drivers"
-	"tinygo.org/x/tinydraw/examples/initdisplay"
+	"os"
 )
 
 func main() {
-	display := initdisplay.InitDisplay()
+	display := new(os.Stdout)
 	redraw(display)
 	display.Display()
 }
