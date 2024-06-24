@@ -110,7 +110,7 @@ var (
 // The API is pairs of points, not Points, so that's a small change.
 func xlate(display displayer, in []int16) []int16 {
 	out := make([]int16, len(in))
-	for i := 0; i < len(out)-2; i += 2 {
+	for i := range out[:len(out)-1] {
 		out[i] = int16(offx + (dia*(in[i])+210)/420)
 		out[i+1] = int16(offy + (dia*(480-in[i+1])+210)/420)
 	}
@@ -128,6 +128,7 @@ func fillpoly(display displayer, color color.RGBA, points ...int16) {
 	}
 	for i := 0; i < np-4; i += 4 {
 		x0, y0, x1, y1 := points[i], points[i+1], points[i+2], points[i+3]
+		log.Printf("line (%d,%d) -> (%d, %d)", x0, y0, x1, y1)
 		tinydraw.Line(display, x0, y0, x1, y1, color)
 
 	}
@@ -135,6 +136,7 @@ func fillpoly(display displayer, color color.RGBA, points ...int16) {
 
 func myfill(display displayer, p []int16, color color.RGBA) { // , Image* color)
 	out := xlate(display, p)
+	log.Printf("xlote %d -> %d", p, out)
 	fillpoly(display, color, out...)
 }
 
@@ -207,7 +209,7 @@ func redraw(display displayer) {
 	anghr := float64(n.Hour()*30) + float64(n.Minute()/2)
 	angmin := float64(n.Minute() * 6)
 
-	//dia := 200
+	dia = 200
 	//dia = Dx(screen->r) < Dy(screen->r) ? Dx(screen->r) : Dy(screen->r);
 	//var offx, offy int16
 	//offx := screen->r.min.x + (Dx(screen->r) - dia) / 2;
@@ -217,7 +219,8 @@ func redraw(display displayer) {
 
 	/* first draw the filled areas */
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
-	myfill(display, head[:41*2], blk)       /* hair */
+	myfill(display, head[:41*2], blk) /* hair */
+	return
 	myfill(display, head[27*2:56*2], flesh) /* face */
 	myfill(display, mouth[:8], blk)
 	myfill(display, tongue[:9], red)
