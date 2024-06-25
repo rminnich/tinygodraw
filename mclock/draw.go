@@ -1,11 +1,17 @@
 package main
 
 import (
+	"log"
+	"time"
+
 	_ "tinygo.org/x/drivers"
 )
 
 func main() {
 	display := new()
-	redraw(display)
-	display.Display()
+	for {
+		redraw(display)
+		time.Sleep(time.Second)
+	}
+	log.Printf("all done")
 }

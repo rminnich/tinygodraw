@@ -111,8 +111,8 @@ var (
 func xlate(display displayer, in []int16) []int16 {
 	out := make([]int16, len(in))
 	for i := range out[:len(out)-1] {
-		out[i] = in[i]/2 // int16(offx + (dia*(in[i])+210)/420)
-		out[i+1] = in[i+1]/2 // int16(offy + (dia*(480-in[i+1])+210)/420)
+		out[i] = in[i] / 2     // int16(offx + (dia*(in[i])+210)/420)
+		out[i+1] = in[i+1] / 2 // int16(offy + (dia*(480-in[i+1])+210)/420)
 	}
 	return out
 }
@@ -156,15 +156,15 @@ func arm(display displayer, p []int16, angle float64) []int16 {
 	for i := range out[:len(out)-1] {
 		cosp := math.Cos(math.Pi * angle / 180.0)
 		sinp := math.Sin(math.Pi * angle / 180.0)
-		out[i] = int16(float64(p[i])*cosp + float64(p[i+1])*sinp + 210.5)
-		out[i] = int16(float64(p[i+1])*cosp - float64(p[i])*sinp + 270.5)
+		out[i] = int16(float64(p[i])*cosp + float64(p[i+1])*sinp + +200 + 210.5)
+		out[i] = int16(float64(p[i+1])*cosp - float64(p[i])*sinp + 200 + 270.5)
 	}
 	return out
 }
 
 func polyarm(display displayer, p []int16, color color.RGBA, angle float64) {
 	tmp := arm(display, p, angle)
-	out := xlate(display, tmp)
+	out := tmp // xlate(display, tmp)
 	mypoly(display, out, color)
 	//poly(screen, out, np, Enddisc, Enddisc, dia>DBIG?1:0, color, ZP);
 }
@@ -172,7 +172,7 @@ func polyarm(display displayer, p []int16, color color.RGBA, angle float64) {
 func fillarm(display displayer, p []int16, color color.RGBA, angle float64) {
 
 	tmp := arm(display, p, angle)
-	out := xlate(display, tmp)
+	out := tmp // xlate(display, tmp)
 	mypoly(display, out, color)
 	//	fillpoly(screen, out, np, ~0, color, ZP);
 }
@@ -208,6 +208,8 @@ func redraw(display displayer) {
 	n := time.Now()
 	anghr := float64(n.Hour()*30) + float64(n.Minute()/2)
 	angmin := float64(n.Minute() * 6)
+	anghr = float64(n.Minute()*30) + float64(n.Second()/2)
+	angmin = float64(n.Second() * 6)
 
 	dia = 200
 	//dia = Dx(screen->r) < Dy(screen->r) ? Dx(screen->r) : Dy(screen->r);
@@ -220,63 +222,63 @@ func redraw(display displayer) {
 	/* first draw the filled areas */
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
 	if true {
-	myfill(display, head[:41*2], blk) /* hair */
-	myfill(display, head[27*2:56*2], flesh) /* face */
-	myfill(display, mouth[:8], blk)
-}
+		myfill(display, head[:41*2], blk)       /* hair */
+		myfill(display, head[27*2:56*2], flesh) /* face */
+		myfill(display, mouth[:8], blk)
+	}
 	myfill(display, tongue[:9], red)
 	if true {
-	myfill(display, shirt[:10], blk)
-	myfill(display, pants[:26], red)
-	myfill(display, buttonl[:7], wht)
-	myfill(display, buttonr[:7], wht)
-	myfill(display, eyel[:8], wht)
-	myfill(display, eyer[:8], wht)
-	myfill(display, pupill[:8], blk)
-	myfill(display, pupilr[:9], blk)
-	myfill(display, nose[:18], blk)
-	myfill(display, shoel[:13], org)
-	myfill(display, shoer[:16], org)
-	myfill(display, legl[:8], blk)
-	myfill(display, legr[:7], blk)
+		myfill(display, shirt[:10], blk)
+		myfill(display, pants[:26], red)
+		myfill(display, buttonl[:7], wht)
+		myfill(display, buttonr[:7], wht)
+		myfill(display, eyel[:8], wht)
+		myfill(display, eyer[:8], wht)
+		myfill(display, pupill[:8], blk)
+		myfill(display, pupilr[:9], blk)
+		myfill(display, nose[:18], blk)
+		myfill(display, shoel[:13], org)
+		myfill(display, shoer[:16], org)
+		myfill(display, legl[:8], blk)
+		myfill(display, legr[:7], blk)
 
-	/* outline the color-filled areas */
-	mypoly(display, head[27*2:], blk) /* face */
-	mypoly(display, tongue[:9], blk)
-	mypoly(display, pants[:26], blk)
-	mypoly(display, buttonl[:7], blk)
-	mypoly(display, buttonr[:7], blk)
-	mypoly(display, eyel[:8], blk)
-	mypoly(display, eyer[:8], blk)
-	mypoly(display, shoel[:13], blk)
-	mypoly(display, shoer[:16], blk)
+		/* outline the color-filled areas */
+		mypoly(display, head[27*2:], blk) /* face */
+		mypoly(display, tongue[:9], blk)
+		mypoly(display, pants[:26], blk)
+		mypoly(display, buttonl[:7], blk)
+		mypoly(display, buttonr[:7], blk)
+		mypoly(display, eyel[:8], blk)
+		mypoly(display, eyer[:8], blk)
+		mypoly(display, shoel[:13], blk)
+		mypoly(display, shoer[:16], blk)
 
-	/* draw the details */
-	mypoly(display, nose1[:3], blk)
-	mypoly(display, mouth1[:3], blk)
-	mypoly(display, mouth2[:2], blk)
-	mypoly(display, tongue1[:2], blk)
-	mypoly(display, tail[:7], blk)
-	mypoly(display, cuffl[:4], blk)
-	mypoly(display, cuffr[:3], blk)
-	mypoly(display, shoel1[:4], blk)
-	mypoly(display, shoel2[:2], blk)
-	mypoly(display, shoer1[:4], blk)
-	mypoly(display, shoer2[:2], blk)
-	mypoly(display, tick1[:4], dots)
-	mypoly(display, tick2[:4], dots)
-	mypoly(display, tick3[:4], dots)
-	mypoly(display, tick4[:4], dots)
-	mypoly(display, tick5[:4], dots)
-	mypoly(display, tick7[:4], dots)
-	mypoly(display, tick8[:4], dots)
-	mypoly(display, tick9[:4], dots)
-	mypoly(display, tick10[:4], dots)
-	mypoly(display, tick11[:4], dots)
-	mypoly(display, tick12[:4], dots)
+		/* draw the details */
+		mypoly(display, nose1[:3], blk)
+		mypoly(display, mouth1[:3], blk)
+		mypoly(display, mouth2[:2], blk)
+		mypoly(display, tongue1[:2], blk)
+		mypoly(display, tail[:7], blk)
+		mypoly(display, cuffl[:4], blk)
+		mypoly(display, cuffr[:3], blk)
+		mypoly(display, shoel1[:4], blk)
+		mypoly(display, shoel2[:2], blk)
+		mypoly(display, shoer1[:4], blk)
+		mypoly(display, shoer2[:2], blk)
+		mypoly(display, tick1[:4], dots)
+		mypoly(display, tick2[:4], dots)
+		mypoly(display, tick3[:4], dots)
+		mypoly(display, tick4[:4], dots)
+		mypoly(display, tick5[:4], dots)
+		mypoly(display, tick7[:4], dots)
+		mypoly(display, tick8[:4], dots)
+		mypoly(display, tick9[:4], dots)
+		mypoly(display, tick10[:4], dots)
+		mypoly(display, tick11[:4], dots)
+		mypoly(display, tick12[:4], dots)
 
-	arms(display, anghr, angmin)
-}
+		arms(display, anghr, angmin)
+	}
 
 	display.Display()
 	return
