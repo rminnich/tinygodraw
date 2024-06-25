@@ -126,7 +126,7 @@ func fillpoly(display displayer, color color.RGBA, points ...int16) {
 	if np < 4 {
 		log.Printf("fillpoly: only %d points", np)
 	}
-	for i := 0; i < np-4; i += 4 {
+	for i := 0; i < np-4; i += 2 {
 		x0, y0, x1, y1 := points[i], points[i+1], points[i+2], points[i+3]
 		log.Printf("line (%d,%d) -> (%d, %d)", x0, y0, x1, y1)
 		tinydraw.Line(display, x0, y0, x1, y1, color)
@@ -263,17 +263,17 @@ func redraw(display displayer) {
 	mypoly(display, shoel2[:2], blk)
 	mypoly(display, shoer1[:4], blk)
 	mypoly(display, shoer2[:2], blk)
-	mypoly(display, tick1[:2], dots)
-	mypoly(display, tick2[:2], dots)
-	mypoly(display, tick3[:2], dots)
-	mypoly(display, tick4[:2], dots)
-	mypoly(display, tick5[:2], dots)
-	mypoly(display, tick7[:2], dots)
-	mypoly(display, tick8[:2], dots)
-	mypoly(display, tick9[:2], dots)
-	mypoly(display, tick10[:2], dots)
-	mypoly(display, tick11[:2], dots)
-	mypoly(display, tick12[:2], dots)
+	mypoly(display, tick1[:4], dots)
+	mypoly(display, tick2[:4], dots)
+	mypoly(display, tick3[:4], dots)
+	mypoly(display, tick4[:4], dots)
+	mypoly(display, tick5[:4], dots)
+	mypoly(display, tick7[:4], dots)
+	mypoly(display, tick8[:4], dots)
+	mypoly(display, tick9[:4], dots)
+	mypoly(display, tick10[:4], dots)
+	mypoly(display, tick11[:4], dots)
+	mypoly(display, tick12[:4], dots)
 
 	arms(display, anghr, angmin)
 }
