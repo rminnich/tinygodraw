@@ -111,8 +111,8 @@ var (
 func xlate(display displayer, in []int16) []int16 {
 	out := make([]int16, len(in))
 	for i := range out[:len(out)-1] {
-		out[i] = int16(offx + (dia*(in[i])+210)/420)
-		out[i+1] = int16(offy + (dia*(480-in[i+1])+210)/420)
+		out[i] = in[i]/2 // int16(offx + (dia*(in[i])+210)/420)
+		out[i+1] = in[i+1]/2 // int16(offy + (dia*(480-in[i+1])+210)/420)
 	}
 	return out
 }
@@ -219,11 +219,13 @@ func redraw(display displayer) {
 
 	/* first draw the filled areas */
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
+	if true {
 	myfill(display, head[:41*2], blk) /* hair */
-	return
 	myfill(display, head[27*2:56*2], flesh) /* face */
 	myfill(display, mouth[:8], blk)
+}
 	myfill(display, tongue[:9], red)
+	if true {
 	myfill(display, shirt[:10], blk)
 	myfill(display, pants[:26], red)
 	myfill(display, buttonl[:7], wht)
@@ -274,6 +276,7 @@ func redraw(display displayer) {
 	mypoly(display, tick12[:2], dots)
 
 	arms(display, anghr, angmin)
+}
 
 	display.Display()
 	return
