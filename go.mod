@@ -3,6 +3,7 @@ module tinygo/draw
 go 1.21.4
 
 require (
+	golang.org/x/image v0.18.0
 	tinygo.org/x/drivers v0.28.0
 	tinygo.org/x/tinydraw v0.4.0
 )
