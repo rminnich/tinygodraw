@@ -6,8 +6,6 @@ import (
 	"image/draw"
 	"image/png"
 	"os"
-
-	"golang.org/x/image/colornames"
 )
 
 func main() {
@@ -23,10 +21,11 @@ func main() {
 	img := image.NewRGBA(image.Rect(0, 0, 200, 200))
 
 	// Fill the entire image with white color
+	d("white %v", color.White)
 	draw.Draw(img, img.Bounds(), &image.Uniform{color.White}, image.Point{}, draw.Src)
 
 	// Fill the polygon with a specific color
-	fillPolygon(img, vertices, colornames.Blue)
+	fillPolygon(img, vertices, color.Black)
 
 	// Save the image to a file
 	file, err := os.Create("polygon.png")
@@ -89,25 +88,11 @@ func drawLine(img *image.Alpha, p1, p2 image.Point, col color.Alpha) {
 	}
 }
 
-// floodFill fills the area connected to the start point with the specified color
-func floodFill(img *image.Alpha, start image.Point, col color.Alpha) {
-	q := []image.Point{start}
-	for len(q) > 0 {
-		p := q[0]
-		q = q[1:]
-		r := image.Rect(start.X, start.Y, start.X, start.Y)
-
-		if !img.Bounds().In(r) || img.AlphaAt(p.X, p.Y).A == col.A {
-			continue
-		}
-
-		img.SetAlpha(p.X, p.Y, col)
-
-		q = append(q, image.Point{p.X + 1, p.Y})
-		q = append(q, image.Point{p.X - 1, p.Y})
-		q = append(q, image.Point{p.X, p.Y + 1})
-		q = append(q, image.Point{p.X, p.Y - 1})
+func contains(img image.Image, p image.Point) bool {
+	if p.X < 0 || p.Y < 0 || p.X >= img.Bounds().Dx() || p.Y >= img.Bounds().Dy() {
+		return false
 	}
+	return true
 }
 
 // abs returns the absolute value of an integer
