@@ -7,34 +7,27 @@ import (
 )
 
 var d = log.Printf
-
+// floodFill fills the area connected to the start point with the specified color
 func floodFill(img *image.Alpha, start image.Point, col color.Alpha) {
+	q := []image.Point{start}
+	initialColor := img.AlphaAt(start.X, start.Y)
 
-	var painting bool
-	r := img.Bounds()
-	for y := r.Min.Y; y < r.Max.Y; y++ {
-		painting = false
-		for x := r.Min.X; x < r.Max.X; x++ {
-			at := img.AlphaAt(x, y).A
-			d("%d,%d=%v col %v col.A %v", y, x, at, col, col.A)
-			if !painting {
-				if at != col.A {
-					d("skip %v,%v", y, x)
-					continue
-				}
-				d("start %v,%v", y, x)
-				painting = true
-				continue
-			} else {
-				if at == col.A {
-					d("stop %v,%v", y, x)
-					painting = false
-					continue
-				}
-			}
-			d("paint %v,%v", y, x)
-			img.SetAlpha(x, y, col)
+	for len(q) > 0 {
+		p := q[0]
+		q = q[1:]
+
+		if p.X < 0 || p.Y < 0 || p.X >= img.Bounds().Dx() || p.Y >= img.Bounds().Dy() {
+			continue
+		}
+
+		if img.AlphaAt(p.X, p.Y) == initialColor {
+			img.SetAlpha(p.X, p.Y, col)
+
+			q = append(q, image.Point{p.X + 1, p.Y})
+			q = append(q, image.Point{p.X - 1, p.Y})
+			q = append(q, image.Point{p.X, p.Y + 1})
+			q = append(q, image.Point{p.X, p.Y - 1})
 		}
 	}
-
 }
+

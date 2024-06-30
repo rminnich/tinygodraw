@@ -47,7 +47,7 @@ func fillPolygon(img *image.RGBA, vertices []image.Point, col color.Color) {
 	// Draw the polygon on the mask
 	for i := 0; i < len(vertices); i++ {
 		j := (i + 1) % len(vertices)
-		drawLine(mask, vertices[i], vertices[j], color.Alpha{255})
+		drawLine(mask, vertices[i], vertices[j], color.Alpha(col))
 	}
 
 	// Fill the polygon using flood fill
