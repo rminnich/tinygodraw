@@ -1,9 +1,11 @@
 package main
 
 import (
-	"github.com/llgcode/draw2d/draw2dimg"
 	"image"
 	"image/color"
+
+	"github.com/llgcode/draw2d"
+	"github.com/llgcode/draw2d/draw2dimg"
 )
 
 var (
@@ -147,11 +149,29 @@ func main() {
 	for _, s := range all {
 		gc.MoveTo(float64(s[0]), float64(s[1]))
 		for i := 2; i < len(s); i += 2 {
-			gc.LineTo(float64(s[i]), float64(s[i+1]))
+			gc.LineTo(480-float64(s[i]), 640-float64(s[i+1]))
 		}
 		gc.Close()
 		gc.FillStroke()
 	}
+	// Set the font luximbi.ttf
+	gc.SetFontData(draw2d.FontData{Name: "luxi", Family: draw2d.FontFamilyMono, Style: draw2d.FontStyleBold | draw2d.FontStyleItalic})
+	// Set the fill text color to black
+	gc.SetFillColor(image.White)
+	gc.SetFontSize(14)
+	// Display Hello World
+	gc.FillStringAt("Hello World", 8, 52)
+	gc.FillStroke()
+	gc.FillStringAt("0,0", 0, 0)
+	gc.FillStroke()
+	gc.FillStringAt("10,10", 10, 10)
+	gc.FillStroke()
+	gc.FillStringAt("100,100", 100, 100)
+	gc.FillStroke()
+	gc.FillStringAt("200,200", 200, 200)
+	gc.FillStroke()
+	gc.FillStringAt("300,300", 300, 300)
+	gc.FillStroke()
 
 	// Save to file
 	draw2dimg.SaveToPngFile("hello.png", dest)
