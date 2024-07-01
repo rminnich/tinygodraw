@@ -3,9 +3,11 @@ package main
 import (
 	"image"
 	"image/color"
+	"log"
 
 	"github.com/llgcode/draw2d"
 	"github.com/llgcode/draw2d/draw2dimg"
+	"github.com/llgcode/draw2d/samples/gopher2"
 )
 
 type mouse struct {
@@ -14,11 +16,12 @@ type mouse struct {
 }
 
 var (
-	blk = color.RGBA{A: 255}
-	red = color.RGBA{R: 255, A: 255}
-	wht = color.RGBA{G: 255, B: 255, R: 255, A: 255}
-	dots = color.RGBA{G: 64, B: 64, R: 64, A: 255}
-	org = color.RGBA{G: 64, B: 0, R: 64, A: 255}
+	blk   = color.RGBA{A: 255}
+	blu   = color.RGBA{B: 255, A: 255}
+	red   = color.RGBA{R: 255, A: 255}
+	wht   = color.RGBA{G: 255, B: 255, R: 255, A: 255}
+	dots  = color.RGBA{G: 64, B: 64, R: 64, A: 255}
+	org   = color.RGBA{G: 64, B: 0, R: 64, A: 255}
 	flesh = color.RGBA{G: 0, B: 64, R: 64, A: 255}
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
 	head = mouse{
@@ -121,37 +124,37 @@ var (
 		col:    wht,
 		points: []float64{195, 93, 182, 83}}
 	tick1 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{302, 432, 310, 446}}
 	tick2 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{370, 365, 384, 371}}
 	tick3 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{395, 270, 410, 270}}
 	tick4 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{370, 180, 384, 173}}
 	tick5 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{302, 113, 310, 100}}
 	tick7 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{119, 113, 110, 100}}
 	tick8 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{40, 173, 52, 180}}
 	tick9 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{10, 270, 25, 270}}
 	tick10 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{40, 371, 52, 365}}
 	tick11 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{110, 446, 119, 432}}
 	tick12 = mouse{
-		col:    wht,
+		col:    blu,
 		points: []float64{210, 455, 210, 470}}
 	armh = mouse{
 		col:    wht,
@@ -236,6 +239,13 @@ var (
 )
 
 func main() {
+
+	if false {
+		dest := image.NewRGBA(image.Rect(0, 0, 480, 640.0))
+		gc := draw2dimg.NewGraphicContext(dest)
+		s, err := gopher2.Main(gc, "png")
+		log.Printf("%q %v", s, err)
+	}
 	// Initialize the graphic context on an RGBA image
 	dest := image.NewRGBA(image.Rect(0, 0, 480, 640.0))
 	gc := draw2dimg.NewGraphicContext(dest)
@@ -252,17 +262,28 @@ func main() {
 	gc.Close()
 	gc.FillStroke()
 
-	for _, m := range all {
+	gc.MoveTo(110, 110) // should always be called first for a new path
+	gc.LineTo(200, 250)
+	gc.QuadCurveTo(120, 10, 10, 10)
+	gc.Close()
+	gc.SetFillColor(red)
+	gc.SetStrokeColor(blu)
+	gc.SetLineWidth(8)
+	gc.FillStroke()
+
+	for i, m := range all {
+		m := m
 		s := m.points
-		gc.SetFillColor(m.col)
-		gc.SetStrokeColor(m.col)
-		gc.SetFillColor(m.col)
-		gc.SetStrokeColor(red)
+		gc := draw2dimg.NewGraphicContext(dest)
+		log.Printf("%d: col %v", i, m.col)
 		gc.MoveTo(480-float64(s[0]), 640-float64(s[1]))
 		for i := 2; i < len(s); i += 2 {
 			gc.LineTo(480-float64(s[i]), 640-float64(s[i+1]))
 		}
 		gc.Close()
+		gc.SetLineWidth(1)
+		gc.SetFillColor(m.col)
+		gc.SetStrokeColor(m.col)
 		gc.FillStroke()
 	}
 	// Set the font luximbi.ttf
