@@ -248,10 +248,11 @@ var (
 )
 
 func main() {
-
-	x, y := 480, 640
+	display := new()
+	
+	x, y := display.Size()
 	// Initialize the graphic context on an RGBA image
-	dest := image.NewRGBA(image.Rect(0, 0, x, y))
+	dest := image.NewRGBA(image.Rect(0, 0, int(x), int(y)))
 	gc := draw2dimg.NewGraphicContext(dest)
 	canvas := mouse{ fill: wht, pen: wht, points: []float64{0, 0, 480, 0, 480, 640, 0, 640}}
 
