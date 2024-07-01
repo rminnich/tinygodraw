@@ -12,6 +12,7 @@ type mouse struct {
 	fill   color.RGBA
 	pen    color.RGBA
 	points []float64
+	noclose bool
 }
 
 var (
@@ -24,6 +25,7 @@ var (
 	wht   = color.RGBA{G: 255, B: 255, R: 255, A: 255}
 	dots  = color.RGBA{G: 64, B: 64, R: 64, A: 255}
 	org   = color.RGBA{G: 64, B: 0, R: 64, A: 255}
+	clr   = color.RGBA{G: 0, B: 0, R: 0, A: 0}
 	flesh = color.RGBA{G: 0, B: 64, R: 64, A: 255}
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
 	head = mouse{
@@ -47,11 +49,11 @@ var (
 		fill: red, pen: blk,
 		points: []float64{257, 287, 248, 290}}
 	tongue = mouse{
-		fill: wht, pen: blk,
+		fill: red, pen: blk,
 		points: []float64{235, 285, 243, 280, 246, 281, 247, 286, 245, 289, 241, 291, 237, 294, 233, 294,
 			235, 285}}
 	tongue1 = mouse{
-		fill: wht, pen: blk,
+		fill: red, pen: blk,
 		points: []float64{241, 291, 241, 286}}
 	shirt = mouse{
 		fill: pnk, pen: blk,
@@ -77,12 +79,12 @@ var (
 		points: []float64{265, 316, 275, 320, 275, 325, 273, 330, 271, 332, 269, 333, 267, 331, 265, 327,
 			265, 316}}
 	nose = mouse{
-		fill: wht, pen: blk,
+		fill: blk, pen: blk,
 		points: []float64{285, 308, 288, 302, 294, 301, 298, 301, 302, 303, 305, 305, 308, 308, 309, 310,
 			310, 312, 310, 316, 308, 320, 305, 323, 302, 324, 297, 324, 294, 322, 288, 317,
 			286, 312, 285, 308}}
 	nose1 = mouse{
-		fill: wht, pen: blk,
+		fill: blk, pen: blk,
 		points: []float64{275, 313, 280, 317, 286, 319}}
 	buttonl = mouse{
 		fill: red, pen: blk,
@@ -91,13 +93,16 @@ var (
 		fill: red, pen: blk,
 		points: []float64{224, 213, 221, 209, 221, 197, 228, 191, 232, 200, 230, 211, 224, 213}}
 	tail = mouse{
-		fill: wht, pen: blk,
+		fill: clr, pen: blk,
+		noclose: true,
 		points: []float64{40, 80, 50, 76, 66, 79, 90, 102, 106, 151, 128, 173, 145, 180}}
 	cuffl = mouse{
 		fill: wht, pen: blk,
+		noclose: true,
 		points: []float64{202, 143, 197, 148, 188, 150, 160, 137}}
 	cuffr = mouse{
 		fill: wht, pen: blk,
+		noclose: true,
 		points: []float64{243, 153, 233, 154, 217, 145}}
 	legl = mouse{
 		fill: wht, pen: blk,
@@ -218,8 +223,8 @@ var (
 		shoel2,
 		shoel1,
 		shoel,
-		tongue1,
 		tongue,
+		tongue1,
 		legr,
 		legl,
 		pants,
@@ -228,20 +233,18 @@ var (
 		eyel,
 		pupilr,
 		pupill,
-	}
-	no2 = []mouse{
+		nose1,
+		nose,
 		cuffr,
 		cuffl,
 		tail,
-		buttonr,
-		buttonl,
-		nose1,
-		nose,
-		tongue1,
-		tongue,
 		mouth2,
 		mouth1,
 		mouth,
+	}
+	no2 = []mouse{
+		buttonr,
+		buttonl,
 		head,
 	}
 )
@@ -265,7 +268,9 @@ func main() {
 		for i := 2; i < len(s); i += 2 {
 			gc.LineTo(480-float64(s[i]), 640-float64(s[i+1]))
 		}
-		gc.Close()
+		if ! m.noclose {
+			gc.Close()
+		}
 		gc.SetLineWidth(1)
 		gc.SetFillColor(m.fill)
 		gc.SetStrokeColor(m.pen)
