@@ -241,10 +241,10 @@ var (
 		mouth2,
 		mouth1,
 		mouth,
-	}
-	no2 = []mouse{
 		buttonr,
 		buttonl,
+	}
+	no2 = []mouse{
 		head,
 	}
 )
