@@ -22,6 +22,7 @@ var (
 	yel   = color.RGBA{G: 255, R: 255, A: 255}
 	red   = color.RGBA{R: 255, A: 255}
 	pnk   = color.RGBA{R: 255, G: 128, B: 128, A: 255}
+	face   = color.RGBA{R: 128, G: 0, B: 128, A: 255}
 	wht   = color.RGBA{G: 255, B: 255, R: 255, A: 255}
 	dots  = color.RGBA{G: 64, B: 64, R: 64, A: 255}
 	org   = color.RGBA{G: 64, B: 0, R: 64, A: 255}
@@ -194,7 +195,7 @@ var (
 		fill: wht, pen: blk,
 		points: []float64{20, 130, 16, 118}}
 
-	no = []mouse{
+	showtime = []mouse{
 		handh1,
 		handh,
 		handm4,
@@ -225,8 +226,6 @@ var (
 		shoel,
 		tongue,
 		tongue1,
-		legr,
-		legl,
 		pants,
 		shirt,
 		eyer,
@@ -243,9 +242,8 @@ var (
 		mouth,
 		buttonr,
 		buttonl,
-	}
-	no2 = []mouse{
-		head,
+		legr,
+		legl,
 	}
 )
 
@@ -259,11 +257,13 @@ func main() {
 
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
 	hair := mouse{fill: blk, pen: blk, points: head.points[:41*2]}
-	face := mouse{fill: org, pen: blk, points: head.points[27*2:]}
+	face := mouse{fill: face, pen: blk, points: head.points[27*2:]}
 	for i, m := range append([]mouse{canvas, hair, face}, all...) {
 		m := m
 		s := m.points
-		log.Printf("%d: pen %v, fill %v", i, m.pen, m.fill)
+		if false {
+			log.Printf("%d: pen %v, fill %v", i, m.pen, m.fill)
+		}
 		gc.MoveTo(480-float64(s[0]), 640-float64(s[1]))
 		for i := 2; i < len(s); i += 2 {
 			gc.LineTo(480-float64(s[i]), 640-float64(s[i+1]))
