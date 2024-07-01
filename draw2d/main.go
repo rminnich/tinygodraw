@@ -22,6 +22,7 @@ var (
 	grn   = color.RGBA{G: 255, A: 255}
 	yel   = color.RGBA{G: 255, R: 255,A: 255}
 	red   = color.RGBA{R: 255, A: 255}
+	pnk   = color.RGBA{R: 255, G: 128, B: 128, A: 255}
 	wht   = color.RGBA{G: 255, B: 255, R: 255, A: 255}
 	dots  = color.RGBA{G: 64, B: 64, R: 64, A: 255}
 	org   = color.RGBA{G: 64, B: 0, R: 64, A: 255}
@@ -55,7 +56,7 @@ var (
 		fill:     wht, pen: blk,
 		points: []float64{241, 291, 241, 286}}
 	shirt = mouse{
-		fill:  wht, pen: blk,
+		fill:  pnk, pen: blk,
 		points: []float64{200, 302, 192, 280, 176, 256, 170, 247, 186, 230, 210, 222, 225, 226, 237, 235,
 			222, 291, 200, 302}}
 	pants = mouse{
@@ -71,10 +72,10 @@ var (
 		fill:     wht, pen: blk,
 		points: []float64{275, 320, 278, 337, 275, 345, 268, 344, 260, 333, 260, 323, 264, 316, 275, 320}}
 	pupill = mouse{
-		fill:     wht, pen: blk,
+		fill:     blk, pen: blk,
 		points: []float64{284, 320, 294, 327, 293, 329, 291, 333, 289, 333, 286, 331, 284, 325, 284, 320}}
 	pupilr = mouse{
-		fill:  wht, pen: blk,
+		fill:  blk, pen: blk,
 		points: []float64{265, 316, 275, 320, 275, 325, 273, 330, 271, 332, 269, 333, 267, 331, 265, 327,
 			265, 316}}
 	nose = mouse{
@@ -224,6 +225,11 @@ var (
 		legr,
 		legl,
 		pants,
+		shirt,
+		eyer,
+		eyel,
+		pupilr,
+		pupill,
 	}
 	no2 = []mouse {
 		cuffr,
@@ -233,11 +239,6 @@ var (
 		buttonl,
 		nose1,
 		nose,
-		pupilr,
-		pupill,
-		eyer,
-		eyel,
-		shirt,
 		tongue1,
 		tongue,
 		mouth2,
@@ -282,7 +283,10 @@ func main() {
 	gc.FillStroke()
 	}
 
-	for i, m := range all {
+	/* hair is head[0..41*2], face is head[27*2..56*2] */
+	hair := mouse{fill: blk, pen: blk, points: head.points[:41*2]}
+	face := mouse{fill: org, pen: blk, points: head.points[27*2:]}
+	for i, m := range append([]mouse{hair, face}, all...) {
 		m := m
 		s := m.points
 		gc := draw2dimg.NewGraphicContext(dest)
