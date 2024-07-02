@@ -4,9 +4,15 @@ import (
 	"image"
 	"image/color"
 	"log"
+	"math"
 
 	"github.com/llgcode/draw2d/draw2dimg"
 )
+
+type screen struct {
+	x, y float64
+	*draw2dimg.GraphicContext
+}
 
 type mouse struct {
 	fill   color.RGBA
@@ -247,13 +253,70 @@ var (
 	}
 )
 
+func armpoints(p []float64, angle float64) []float64{
+
+	out := make([]float64, len(p))
+	for i := range out[:len(out)-1] {
+		cosp := math.Cos(math.Pi * angle / 180.0)
+		sinp := math.Sin(math.Pi * angle / 180.0)
+		out[i] = (float64(p[i])*cosp + float64(p[i+1])*sinp + +200 + 210.5)
+		out[i] = (float64(p[i+1])*cosp - float64(p[i])*sinp + 200 + 270.5)
+	}
+	return out
+}
+
+func poly(gc screen, m mouse) {
+	x, y := gc.x, gc.y
+	s := m.points
+               gc.MoveTo(x-float64(s[0]), y-float64(s[1]))
+                for i := 2; i < len(s); i += 2 {
+                        gc.LineTo(x-float64(s[i]), y-float64(s[i+1]))
+                }
+                if ! m.noclose {
+                        gc.Close()
+                }
+                gc.SetLineWidth(1)
+                gc.SetFillColor(m.fill)
+                gc.SetStrokeColor(m.pen)
+                gc.FillStroke()
+}
+
+func arm(s screen, m mouse, slice int, color color.RGBA, angle float64) {
+	m.points = armpoints(m.points[:slice], angle)
+	poly(s, m)
+}
+
+func arms(display screen, anghr, angmin float64) {
+	blk := color.RGBA{A: 255}
+	wht := color.RGBA{G: 255, B: 255, R: 255, A: 255}
+	/* arms */
+	arm(display, armh, 8, blk, anghr)
+	return
+	arm(display, armm, 6, blk, angmin)
+
+	/* hour hand */
+	arm(display, handh, 16, wht, anghr)
+	arm(display, handh, 16, blk, anghr)
+	arm(display, handh1, 2, blk, anghr)
+
+	/* minute hand */
+	arm(display, handm, 18, wht, angmin)
+	arm(display, handm, 18, blk, angmin)
+	arm(display, handm1, 2, blk, angmin)
+	arm(display, handm2, 3, blk, angmin)
+	arm(display, handm3, 3, blk, angmin)
+	arm(display, handm4, 2, blk, angmin)
+}
+
 func main() {
 	display := new()
 	
-	x, y := display.Size()
+	ix, iy := display.Size()
+	x, y := float64(ix), float64(iy)
 	// Initialize the graphic context on an RGBA image
 	dest := image.NewRGBA(image.Rect(0, 0, int(x), int(y)))
-	gc := draw2dimg.NewGraphicContext(dest)
+	gc := screen{GraphicContext: draw2dimg.NewGraphicContext(dest), x: x, y: y}
+	
 	canvas := mouse{ fill: wht, pen: wht, points: []float64{0, 0, 480, 0, 480, 640, 0, 640}}
 
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
@@ -265,9 +328,9 @@ func main() {
 		if false {
 			log.Printf("%d: pen %v, fill %v", i, m.pen, m.fill)
 		}
-		gc.MoveTo(480-float64(s[0]), 640-float64(s[1]))
+		gc.MoveTo(x-float64(s[0]), y-float64(s[1]))
 		for i := 2; i < len(s); i += 2 {
-			gc.LineTo(480-float64(s[i]), 640-float64(s[i+1]))
+			gc.LineTo(x-float64(s[i]), y-float64(s[i+1]))
 		}
 		if ! m.noclose {
 			gc.Close()
@@ -277,6 +340,7 @@ func main() {
 		gc.SetStrokeColor(m.pen)
 		gc.FillStroke()
 	}
+	arms(gc, 30, 60)
 
 	// Save to file
 	draw2dimg.SaveToPngFile("hello.png", dest)
