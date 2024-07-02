@@ -253,14 +253,14 @@ var (
 	}
 )
 
-func armpoints(p []float64, angle float64) []float64{
+func armpoints(gc screen,p []float64, angle float64) []float64{
 
 	out := make([]float64, len(p))
 	for i := range out[:len(out)-1] {
 		cosp := math.Cos(math.Pi * angle / 180.0)
 		sinp := math.Sin(math.Pi * angle / 180.0)
-		out[i] = (float64(p[i])*cosp + float64(p[i+1])*sinp + +200 + 210.5)
-		out[i] = (float64(p[i+1])*cosp - float64(p[i])*sinp + 200 + 270.5)
+		out[i] = (float64(p[i])*cosp + float64(p[i+1])*sinp + gc.x/4)
+		out[i+1] = (float64(p[i+1])*cosp - float64(p[i])*sinp + gc.y/4)
 	}
 	return out
 }
@@ -268,6 +268,7 @@ func armpoints(p []float64, angle float64) []float64{
 func poly(gc screen, m mouse) {
 	x, y := gc.x, gc.y
 	s := m.points
+	log.Printf("poly %d points", len(s))
                gc.MoveTo(x-float64(s[0]), y-float64(s[1]))
                 for i := 2; i < len(s); i += 2 {
                         gc.LineTo(x-float64(s[i]), y-float64(s[i+1]))
@@ -282,13 +283,14 @@ func poly(gc screen, m mouse) {
 }
 
 func arm(s screen, m mouse, slice int, color color.RGBA, angle float64) {
-	m.points = armpoints(m.points[:slice], angle)
+	log.Printf("arm: input: %v", m.points[:slice])
+	m.points = armpoints(s,m.points[:slice], angle)
+	log.Printf("arm: output: %v", m.points[:slice])
+	
 	poly(s, m)
 }
 
 func arms(display screen, anghr, angmin float64) {
-	blk := color.RGBA{A: 255}
-	wht := color.RGBA{G: 255, B: 255, R: 255, A: 255}
 	/* arms */
 	arm(display, armh, 8, blk, anghr)
 	return
