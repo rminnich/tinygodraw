@@ -5,6 +5,7 @@ import (
 	"image/color"
 	"log"
 	"math"
+	"runtime"
 
 	"github.com/llgcode/draw2d/draw2dimg"
 )
@@ -344,6 +345,14 @@ func main() {
 	}
 	arms(gc, 30, 60)
 
+	for x := int16(0); x < ix; x++ {
+		for y := int16(0); y < iy; y++ {
+			display.SetPixel(x, y, dest.RGBAAt(int(x), int(y)))
+		}
+	}
+	display.Display()
 	// Save to file
-	draw2dimg.SaveToPngFile("hello.png", dest)
+	if runtime.GOOS == "linux" {
+		draw2dimg.SaveToPngFile("hello.png", dest)
+	}
 }
