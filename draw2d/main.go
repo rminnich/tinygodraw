@@ -5,6 +5,7 @@ import (
 	"image/color"
 	"log"
 	"math"
+	"runtime"
 
 	"github.com/llgcode/draw2d/draw2dimg"
 )
@@ -313,12 +314,26 @@ func main() {
 	display := new()
 
 	ix, iy := display.Size()
+	flash := func(c color.RGBA) {
+		for x := int16(0); x < ix; x++ {
+			for y := int16(0); y < iy; y++ {
+				display.SetPixel(x, y, c)
+			}
+		}
+	}
+	flash(red)
+	display.Display()
 	x, y := float64(ix), float64(iy)
+	flash(blu)
 	// Initialize the graphic context on an RGBA image
-	dest := image.NewRGBA(image.Rect(0, 0, int(x), int(y)))
+	r := image.Rect(0, 0, int(ix), int(iy))
+	flash(yel)
+	dest := image.NewRGBA(r)
+	flash(red)
 	gc := screen{GraphicContext: draw2dimg.NewGraphicContext(dest), x: x, y: y}
 
-	canvas := mouse{fill: wht, pen: wht, points: []float64{0, 0, 480, 0, 480, 640, 0, 640}}
+	flash(grn)
+	canvas := mouse{fill: wht, pen: wht, points: []float64{0, 0, y, 0, y, x, 0, x}}
 
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
 	hair := mouse{fill: blk, pen: blk, points: head.points[:41*2]}
@@ -343,6 +358,14 @@ func main() {
 	}
 //	arms(gc, 30, 60)
 
+	for x := int16(0); x < ix; x++ {
+		for y := int16(0); y < iy; y++ {
+			display.SetPixel(x, y, dest.RGBAAt(int(x), int(y)))
+		}
+	}
+	display.Display()
 	// Save to file
-	draw2dimg.SaveToPngFile("hello.png", dest)
+	if runtime.GOOS == "linux" {
+		draw2dimg.SaveToPngFile("hello.png", dest)
+	}
 }
