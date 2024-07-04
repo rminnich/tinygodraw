@@ -15,9 +15,9 @@ type screen struct {
 }
 
 type mouse struct {
-	fill   color.RGBA
-	pen    color.RGBA
-	points []float64
+	fill    color.RGBA
+	pen     color.RGBA
+	points  []float64
 	noclose bool
 }
 
@@ -28,7 +28,7 @@ var (
 	yel   = color.RGBA{G: 255, R: 255, A: 255}
 	red   = color.RGBA{R: 255, A: 255}
 	pnk   = color.RGBA{R: 255, G: 128, B: 128, A: 255}
-	face   = color.RGBA{R: 128, G: 0, B: 128, A: 255}
+	face  = color.RGBA{R: 128, G: 0, B: 128, A: 255}
 	wht   = color.RGBA{G: 255, B: 255, R: 255, A: 255}
 	dots  = color.RGBA{G: 64, B: 64, R: 64, A: 255}
 	org   = color.RGBA{G: 64, B: 0, R: 64, A: 255}
@@ -102,15 +102,15 @@ var (
 	tail = mouse{
 		fill: clr, pen: blk,
 		noclose: true,
-		points: []float64{40, 80, 50, 76, 66, 79, 90, 102, 106, 151, 128, 173, 145, 180}}
+		points:  []float64{40, 80, 50, 76, 66, 79, 90, 102, 106, 151, 128, 173, 145, 180}}
 	cuffl = mouse{
 		fill: wht, pen: blk,
 		noclose: true,
-		points: []float64{202, 143, 197, 148, 188, 150, 160, 137}}
+		points:  []float64{202, 143, 197, 148, 188, 150, 160, 137}}
 	cuffr = mouse{
 		fill: wht, pen: blk,
 		noclose: true,
-		points: []float64{243, 153, 233, 154, 217, 145}}
+		points:  []float64{243, 153, 233, 154, 217, 145}}
 	legl = mouse{
 		fill: wht, pen: blk,
 		points: []float64{239, 153, 244, 134, 243, 96, 229, 98, 231, 130, 226, 150, 233, 154, 239, 153}}
@@ -177,28 +177,28 @@ var (
 		fill: wht, pen: blk,
 		points: []float64{-8, 0, 10, 80, 8, 130, 22, 134, 25, 80, 4, -5}}
 	handm = mouse{
-		fill: wht, pen: blk,
+		fill: blu, pen: blk,
 		points: []float64{8, 140, 5, 129, 8, 130, 22, 134, 30, 137, 27, 143, 33, 163, 30, 168,
 			21, 166, 18, 170, 12, 168, 10, 170, 5, 167, 4, 195, -4, 195, -6, 170,
 			0, 154, 8, 140}}
 	handm1 = mouse{
-		fill: wht, pen: blk,
+		fill: blu, pen: blk,
 		points: []float64{0, 154, 5, 167}}
 	handm2 = mouse{
-		fill: wht, pen: blk,
+		fill: blu, pen: blk,
 		points: []float64{14, 167, 12, 158, 10, 152}}
 	handm3 = mouse{
-		fill: wht, pen: blk,
+		fill: blu, pen: blk,
 		points: []float64{12, 158, 18, 152, 21, 166}}
 	handm4 = mouse{
-		fill: wht, pen: blk,
+		fill: blu, pen: blk,
 		points: []float64{20, 156, 29, 151}}
 	handh = mouse{
-		fill: wht, pen: blk,
+		fill: red, pen: blk,
 		points: []float64{20, 130, 15, 135, 6, 129, 4, 155, -4, 155, -6, 127, -8, 121, 4, 108,
 			3, 100, 8, 100, 20, 101, 23, 102, 21, 108, 28, 126, 24, 132, 20, 130}}
 	handh1 = mouse{
-		fill: wht, pen: blk,
+		fill: red, pen: blk,
 		points: []float64{20, 130, 16, 118}}
 
 	showtime = []mouse{
@@ -253,7 +253,7 @@ var (
 	}
 )
 
-func armpoints(gc screen,p []float64, angle float64) []float64{
+func armpoints(gc screen, p []float64, angle float64) []float64 {
 
 	out := make([]float64, len(p))
 	for i := range out[:len(out)-1] {
@@ -269,32 +269,30 @@ func poly(gc screen, m mouse) {
 	x, y := gc.x, gc.y
 	s := m.points
 	log.Printf("poly %d points", len(s))
-               gc.MoveTo(x-float64(s[0]), y-float64(s[1]))
-                for i := 2; i < len(s); i += 2 {
-                        gc.LineTo(x-float64(s[i]), y-float64(s[i+1]))
-                }
-                if ! m.noclose {
-                        gc.Close()
-                }
-                gc.SetLineWidth(1)
-                gc.SetFillColor(m.fill)
-                gc.SetStrokeColor(m.pen)
-                gc.FillStroke()
+	gc.MoveTo(x-float64(s[0]), y-float64(s[1]))
+	for i := 2; i < len(s); i += 2 {
+		gc.LineTo(x-float64(s[i]), y-float64(s[i+1]))
+	}
+	if !m.noclose {
+		gc.Close()
+	}
+	gc.SetLineWidth(1)
+	gc.SetFillColor(m.fill)
+	gc.SetStrokeColor(m.pen)
+	gc.FillStroke()
 }
 
 func arm(s screen, m mouse, slice int, color color.RGBA, angle float64) {
 	log.Printf("arm: input: %v", m.points[:slice])
-	m.points = armpoints(s,m.points[:slice], angle)
+	m.points = armpoints(s, m.points[:slice], angle)
 	log.Printf("arm: output: %v", m.points[:slice])
-	
+
 	poly(s, m)
 }
 
 func arms(display screen, anghr, angmin float64) {
 	/* arms */
 	arm(display, armh, 8, blk, anghr)
-	return
-	arm(display, armm, 6, blk, angmin)
 
 	/* hour hand */
 	arm(display, handh, 16, wht, anghr)
@@ -302,24 +300,26 @@ func arms(display screen, anghr, angmin float64) {
 	arm(display, handh1, 2, blk, anghr)
 
 	/* minute hand */
-	arm(display, handm, 18, wht, angmin)
-	arm(display, handm, 18, blk, angmin)
-	arm(display, handm1, 2, blk, angmin)
-	arm(display, handm2, 3, blk, angmin)
-	arm(display, handm3, 3, blk, angmin)
-	arm(display, handm4, 2, blk, angmin)
+	arm(display, armm, 6, blk, angmin)
+	arm(display, handm, 2*18, wht, angmin)
+	arm(display, handm, 2*18, blk, angmin)
+	return
+	arm(display, handm1, 2*2, blk, angmin)
+	arm(display, handm2, 2*3, blk, angmin)
+	arm(display, handm3, 2*3, blk, angmin)
+	arm(display, handm4, 2*2, blk, angmin)
 }
 
 func main() {
 	display := new()
-	
+
 	ix, iy := display.Size()
 	x, y := float64(ix), float64(iy)
 	// Initialize the graphic context on an RGBA image
 	dest := image.NewRGBA(image.Rect(0, 0, int(x), int(y)))
 	gc := screen{GraphicContext: draw2dimg.NewGraphicContext(dest), x: x, y: y}
-	
-	canvas := mouse{ fill: wht, pen: wht, points: []float64{0, 0, 480, 0, 480, 640, 0, 640}}
+
+	canvas := mouse{fill: wht, pen: wht, points: []float64{0, 0, 480, 0, 480, 640, 0, 640}}
 
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
 	hair := mouse{fill: blk, pen: blk, points: head.points[:41*2]}
@@ -334,7 +334,7 @@ func main() {
 		for i := 2; i < len(s); i += 2 {
 			gc.LineTo(x-float64(s[i]), y-float64(s[i+1]))
 		}
-		if ! m.noclose {
+		if !m.noclose {
 			gc.Close()
 		}
 		gc.SetLineWidth(1)
