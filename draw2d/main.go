@@ -267,12 +267,11 @@ func armpoints(gc screen, p []float64, angle float64) []float64 {
 }
 
 func poly(gc screen, m mouse) {
-	x, y := gc.x, gc.y
 	s := m.points
 	log.Printf("poly %d points", len(s))
-	gc.MoveTo(x-float64(s[0]), y-float64(s[1]))
+	gc.MoveTo(float64(s[0]), float64(s[1]))
 	for i := 2; i < len(s); i += 2 {
-		gc.LineTo(x-float64(s[i]), y-float64(s[i+1]))
+		gc.LineTo(float64(s[i]), float64(s[i+1]))
 	}
 	if !m.noclose {
 		gc.Close()
@@ -315,12 +314,26 @@ func main() {
 	display := new()
 
 	ix, iy := display.Size()
+	flash := func(c color.RGBA) {
+		for x := int16(0); x < ix; x++ {
+			for y := int16(0); y < iy; y++ {
+				display.SetPixel(x, y, c)
+			}
+		}
+	}
+	flash(red)
+	display.Display()
 	x, y := float64(ix), float64(iy)
+	flash(blu)
 	// Initialize the graphic context on an RGBA image
-	dest := image.NewRGBA(image.Rect(0, 0, int(x), int(y)))
+	r := image.Rect(0, 0, int(ix), int(iy))
+	flash(yel)
+	dest := image.NewRGBA(r)
+	flash(red)
 	gc := screen{GraphicContext: draw2dimg.NewGraphicContext(dest), x: x, y: y}
 
-	canvas := mouse{fill: wht, pen: wht, points: []float64{0, 0, 480, 0, 480, 640, 0, 640}}
+	flash(grn)
+	canvas := mouse{fill: wht, pen: wht, points: []float64{0, 0, y, 0, y, x, 0, x}}
 
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
 	hair := mouse{fill: blk, pen: blk, points: head.points[:41*2]}
@@ -331,9 +344,9 @@ func main() {
 		if false {
 			log.Printf("%d: pen %v, fill %v", i, m.pen, m.fill)
 		}
-		gc.MoveTo(x-float64(s[0]), y-float64(s[1]))
+		gc.MoveTo(float64(s[0]), float64(s[1]))
 		for i := 2; i < len(s); i += 2 {
-			gc.LineTo(x-float64(s[i]), y-float64(s[i+1]))
+			gc.LineTo(float64(s[i]), float64(s[i+1]))
 		}
 		if !m.noclose {
 			gc.Close()
