@@ -341,7 +341,7 @@ func main() {
 		gc.SetStrokeColor(m.pen)
 		gc.FillStroke()
 	}
-	arms(gc, 30, 60)
+//	arms(gc, 30, 60)
 
 	// Save to file
 	draw2dimg.SaveToPngFile("hello.png", dest)
