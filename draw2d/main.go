@@ -266,12 +266,11 @@ func armpoints(gc screen, p []float64, angle float64) []float64 {
 }
 
 func poly(gc screen, m mouse) {
-	x, y := gc.x, gc.y
 	s := m.points
 	log.Printf("poly %d points", len(s))
-	gc.MoveTo(x-float64(s[0]), y-float64(s[1]))
+	gc.MoveTo(float64(s[0]), float64(s[1]))
 	for i := 2; i < len(s); i += 2 {
-		gc.LineTo(x-float64(s[i]), y-float64(s[i+1]))
+		gc.LineTo(float64(s[i]), float64(s[i+1]))
 	}
 	if !m.noclose {
 		gc.Close()
@@ -330,9 +329,9 @@ func main() {
 		if false {
 			log.Printf("%d: pen %v, fill %v", i, m.pen, m.fill)
 		}
-		gc.MoveTo(x-float64(s[0]), y-float64(s[1]))
+		gc.MoveTo(float64(s[0]), float64(s[1]))
 		for i := 2; i < len(s); i += 2 {
-			gc.LineTo(x-float64(s[i]), y-float64(s[i+1]))
+			gc.LineTo(float64(s[i]), float64(s[i+1]))
 		}
 		if !m.noclose {
 			gc.Close()
