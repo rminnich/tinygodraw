@@ -327,6 +327,8 @@ func main() {
 	flash(blu)
 	// Initialize the graphic context on an RGBA image
 	r := image.Rect(0, 0, int(ix), int(iy))
+	log.Printf("-------------> %d", r)
+	return
 	flash(yel)
 	dest := image.NewRGBA(r)
 	flash(red)

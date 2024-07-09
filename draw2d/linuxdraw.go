@@ -25,5 +25,5 @@ func (d displayer) Size() (x, y int16) {
 	return 320, 240
 }
 func (d displayer) SetPixel(x, y int16, c color.RGBA) {
-	log.Printf("Set (%d, %d) to %v", x, y, c)
+//	log.Printf("Set (%d, %d) to %v", x, y, c)
 }
