@@ -358,7 +358,7 @@ func main() {
 		gc.SetStrokeColor(m.pen)
 		gc.FillStroke()
 	}
-//	arms(gc, 30, 60)
+	//	arms(gc, 30, 60)
 
 	for x := int16(0); x < ix; x++ {
 		for y := int16(0); y < iy; y++ {
