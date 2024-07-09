@@ -330,7 +330,7 @@ func main() {
 	log.Printf("-------------> %d", r)
 	return
 	flash(yel)
-	dest := image.NewRGBA(r)
+	dest := image.NewAlpha(r)
 	flash(red)
 	gc := screen{GraphicContext: draw2dimg.NewGraphicContext(dest), x: x, y: y}
 
@@ -362,7 +362,9 @@ func main() {
 
 	for x := int16(0); x < ix; x++ {
 		for y := int16(0); y < iy; y++ {
-			display.SetPixel(x, y, dest.RGBAAt(int(x), int(y)))
+			r, g, b, a := dest.RGBA64At(int(x), int(y)).RGBA()
+			c := color.RGBA{R: uint8(r), G: uint8(g), B: uint8(b), A: uint8(a)}
+			display.SetPixel(x, y, c)
 		}
 	}
 	display.Display()
