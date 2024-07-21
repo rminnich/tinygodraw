@@ -3,6 +3,7 @@ module tinygo/draw
 go 1.21.4
 
 require (
+	github.com/fogleman/gg v1.3.0
 	github.com/llgcode/draw2d v0.0.0-20240627062922-0ed1ff131195
 	tinygo.org/x/drivers v0.28.0
 	tinygo.org/x/tinydraw v0.4.0
