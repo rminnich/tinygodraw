@@ -10,4 +10,4 @@ imports:
 host:
 	go build .
 f:
-	sudo mount /dev/sdb /media/rminnich/ && sudo cp mclock.uf2 /media/rminnich/CURRENT.UF2  && sudo umount /media/rminnich 
+	sudo mount /dev/sda /media/rminnich/ && sudo cp mclock.uf2 /media/rminnich/CURRENT.UF2  && sudo umount /media/rminnich
