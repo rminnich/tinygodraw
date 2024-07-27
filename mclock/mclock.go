@@ -278,8 +278,8 @@ func redraw(display displayer) {
 		mypoly(display, mouth2, blk)
 		mypoly(display, tongue1, blk)
 	}
-	if false {
-		mypoly(display, tail[:7], blk)
+	if true {
+		mypoly(display, tail, blk)
 	}
 	if false {
 		mypoly(display, cuffl[:4], blk)
