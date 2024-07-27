@@ -177,27 +177,26 @@ func fillarm(display displayer, p []int16, color color.RGBA, angle float64) {
 	//	fillpoly(screen, out, np, ~0, color, ZP);
 }
 
-func arms(display displayer, anghr, angmin float64) {
-	blk := color.RGBA{A: 255}
-	wht := color.RGBA{G: 255, B: 255, R: 255, A: 255}
+func arms(display displayer, anghr, angmin float64, col color.RGBA) {
 	/* arms */
-	fillarm(display, armh[:8], blk, anghr)
-	fillarm(display, armm[:6], blk, angmin)
+	fillarm(display, armh[:8], col, anghr)
+	fillarm(display, armm[:6], col, angmin)
 
 	/* hour hand */
-	fillarm(display, handh[:16], wht, anghr)
-	polyarm(display, handh[:16], blk, anghr)
-	polyarm(display, handh1[:2], blk, anghr)
+	fillarm(display, handh[:16], col, anghr)
+	polyarm(display, handh[:16], col, anghr)
+	polyarm(display, handh1[:2], col, anghr)
 
 	/* minute hand */
-	fillarm(display, handm[:18], wht, angmin)
-	polyarm(display, handm[:18], blk, angmin)
-	polyarm(display, handm1[:2], blk, angmin)
-	polyarm(display, handm2[:3], blk, angmin)
-	polyarm(display, handm3[:3], blk, angmin)
-	polyarm(display, handm4[:2], blk, angmin)
+	fillarm(display, handm[:18], col, angmin)
+	polyarm(display, handm[:18], col, angmin)
+	polyarm(display, handm1[:2], col, angmin)
+	polyarm(display, handm2[:3], col, angmin)
+	polyarm(display, handm3[:3], col, angmin)
+	polyarm(display, handm4[:2], col, angmin)
 }
 
+var oldanghr, oldangmin float64
 func redraw(display displayer) {
 	blk := color.RGBA{A: 255}
 	red := color.RGBA{R: 255, A: 255}
@@ -221,13 +220,13 @@ func redraw(display displayer) {
 
 	/* first draw the filled areas */
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
-	if true {
+	if false {
 		myfill(display, head[:41*2], blk)       /* hair */
 		myfill(display, head[27*2:56*2], flesh) /* face */
 		myfill(display, mouth[:8], blk)
 	}
 	myfill(display, tongue[:9], red)
-	if true {
+	if false {
 		myfill(display, shirt[:10], blk)
 		myfill(display, pants[:26], red)
 		myfill(display, buttonl[:7], wht)
@@ -276,8 +275,12 @@ func redraw(display displayer) {
 		mypoly(display, tick10[:4], dots)
 		mypoly(display, tick11[:4], dots)
 		mypoly(display, tick12[:4], dots)
+	}
+	if true {
 
-		arms(display, anghr, angmin)
+		arms(display, oldanghr, oldangmin, wht)
+		arms(display, anghr, angmin, blk)
+		oldanghr, oldangmin = anghr, angmin
 	}
 
 	display.Display()
