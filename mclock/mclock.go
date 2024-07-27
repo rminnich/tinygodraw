@@ -244,9 +244,9 @@ func redraw(display displayer) {
 	if false {
 		myfill(display, nose[:18], blk)
 	}
-	if false {
-		myfill(display, shoel[:13], org)
-		myfill(display, shoer[:16], org)
+	if true {
+		myfill(display, shoel, org)
+		myfill(display, shoer, org)
 	}
 	if true {
 		myfill(display, legl, blk)
