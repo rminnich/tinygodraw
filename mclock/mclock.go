@@ -230,17 +230,17 @@ func redraw(display displayer) {
 		myfill(display, mouth[:8], blk)
 	}
 	myfill(display, tongue[:9], red)
-	if false {
+	if true {
 		myfill(display, shirt[:10], blk)
 		myfill(display, pants[:26], red)
 		myfill(display, buttonl[:7], wht)
 		myfill(display, buttonr[:7], wht)
 	}
-	if false {
-		myfill(display, eyel[:8], wht)
-		myfill(display, eyer[:8], wht)
-		myfill(display, pupill[:8], blk)
-		myfill(display, pupilr[:9], blk)
+	if true {
+		myfill(display, eyel, wht)
+		myfill(display, eyer, wht)
+		myfill(display, pupill, blk)
+		myfill(display, pupilr, blk)
 	}
 	if false {
 		myfill(display, nose[:18], blk)
