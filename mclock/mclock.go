@@ -146,7 +146,8 @@ func mypoly(display displayer, p []int16, color color.RGBA) {
 	//	if dia > DBIG {
 	//		b = 1
 	//	}
-	myfill(display, out, color)
+	fillpoly(display, color, out...)
+	//myfill(display, p, color)
 	//fillpoly(display, , out, np, Enddisc, Enddisc, b, color, ZP)
 }
 
@@ -156,8 +157,8 @@ func arm(display displayer, p []int16, angle float64) []int16 {
 	for i := range out[:len(out)-1] {
 		cosp := math.Cos(math.Pi * angle / 180.0)
 		sinp := math.Sin(math.Pi * angle / 180.0)
-		out[i] = int16(float64(p[i])*cosp + float64(p[i+1])*sinp + +200 + 210.5)
-		out[i] = int16(float64(p[i+1])*cosp - float64(p[i])*sinp + 200 + 270.5)
+		out[i] = int16(float64(p[i])*cosp + float64(p[i+1])*sinp + 210.5)
+		out[i] = int16(float64(p[i+1])*cosp - float64(p[i])*sinp + 270.5)
 	}
 	return out
 }
@@ -252,10 +253,12 @@ func redraw(display displayer) {
 		myfill(display, legl, blk)
 		myfill(display, legr, blk)
 	}
-	if false {
+	if true {
 
 		/* outline the color-filled areas */
 		mypoly(display, head[27*2:], blk) /* face */
+	}
+	if false {
 		mypoly(display, tongue[:9], blk)
 		mypoly(display, pants[:26], blk)
 		mypoly(display, buttonl[:7], blk)
