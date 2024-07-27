@@ -242,8 +242,8 @@ func redraw(display displayer) {
 		myfill(display, pupill, blk)
 		myfill(display, pupilr, blk)
 	}
-	if false {
-		myfill(display, nose[:18], blk)
+	if true {
+		myfill(display, nose, red)
 	}
 	if true {
 		myfill(display, shoel, org)
@@ -263,10 +263,12 @@ func redraw(display displayer) {
 		mypoly(display, pants[:26], blk)
 		mypoly(display, buttonl[:7], blk)
 		mypoly(display, buttonr[:7], blk)
-		mypoly(display, eyel[:8], blk)
-		mypoly(display, eyer[:8], blk)
-		mypoly(display, shoel[:13], blk)
-		mypoly(display, shoer[:16], blk)
+	}
+	if true {
+		mypoly(display, eyel, blk)
+		mypoly(display, eyer, blk)
+		mypoly(display, shoel, blk)
+		mypoly(display, shoer, blk)
 	}
 	if false {
 
