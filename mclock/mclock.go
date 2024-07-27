@@ -270,13 +270,13 @@ func redraw(display displayer) {
 		mypoly(display, shoel, blk)
 		mypoly(display, shoer, blk)
 	}
-	if false {
+	if true {
 
 		/* draw the details */
-		mypoly(display, nose1[:3], blk)
-		mypoly(display, mouth1[:3], blk)
-		mypoly(display, mouth2[:2], blk)
-		mypoly(display, tongue1[:2], blk)
+		mypoly(display, nose1, blk)
+		mypoly(display, mouth1, blk)
+		mypoly(display, mouth2, blk)
+		mypoly(display, tongue1, blk)
 	}
 	if false {
 		mypoly(display, tail[:7], blk)
