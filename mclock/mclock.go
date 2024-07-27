@@ -197,11 +197,12 @@ func arms(display displayer, anghr, angmin float64, col color.RGBA) {
 }
 
 var oldanghr, oldangmin float64
+
 func redraw(display displayer) {
 	blk := color.RGBA{A: 255}
 	red := color.RGBA{R: 255, A: 255}
 	wht := color.RGBA{G: 255, B: 255, R: 255, A: 255}
-	dots := color.RGBA{G: 64, B: 64, R: 64, A: 255}
+	dots := color.RGBA{G: 255, B: 0, R: 0, A: 255}
 	org := color.RGBA{G: 64, B: 0, R: 64, A: 255}
 	flesh := color.RGBA{G: 0, B: 64, R: 64, A: 255}
 	n := time.Now()
@@ -209,6 +210,8 @@ func redraw(display displayer) {
 	angmin := float64(n.Minute() * 6)
 	anghr = float64(n.Minute()*30) + float64(n.Second()/2)
 	angmin = float64(n.Second() * 6)
+	anghr = -anghr
+	angmin = -angmin
 
 	dia = 200
 	//dia = Dx(screen->r) < Dy(screen->r) ? Dx(screen->r) : Dy(screen->r);
@@ -220,7 +223,7 @@ func redraw(display displayer) {
 
 	/* first draw the filled areas */
 	/* hair is head[0..41*2], face is head[27*2..56*2] */
-	if false {
+	if true {
 		myfill(display, head[:41*2], blk)       /* hair */
 		myfill(display, head[27*2:56*2], flesh) /* face */
 		myfill(display, mouth[:8], blk)
@@ -231,15 +234,25 @@ func redraw(display displayer) {
 		myfill(display, pants[:26], red)
 		myfill(display, buttonl[:7], wht)
 		myfill(display, buttonr[:7], wht)
+	}
+	if false {
 		myfill(display, eyel[:8], wht)
 		myfill(display, eyer[:8], wht)
 		myfill(display, pupill[:8], blk)
 		myfill(display, pupilr[:9], blk)
+	}
+	if false {
 		myfill(display, nose[:18], blk)
+	}
+	if false {
 		myfill(display, shoel[:13], org)
 		myfill(display, shoer[:16], org)
-		myfill(display, legl[:8], blk)
-		myfill(display, legr[:7], blk)
+	}
+	if true {
+		myfill(display, legl, blk)
+		myfill(display, legr, blk)
+	}
+	if false {
 
 		/* outline the color-filled areas */
 		mypoly(display, head[27*2:], blk) /* face */
@@ -251,19 +264,29 @@ func redraw(display displayer) {
 		mypoly(display, eyer[:8], blk)
 		mypoly(display, shoel[:13], blk)
 		mypoly(display, shoer[:16], blk)
+	}
+	if false {
 
 		/* draw the details */
 		mypoly(display, nose1[:3], blk)
 		mypoly(display, mouth1[:3], blk)
 		mypoly(display, mouth2[:2], blk)
 		mypoly(display, tongue1[:2], blk)
+	}
+	if false {
 		mypoly(display, tail[:7], blk)
+	}
+	if false {
 		mypoly(display, cuffl[:4], blk)
 		mypoly(display, cuffr[:3], blk)
+	}
+	if false {
 		mypoly(display, shoel1[:4], blk)
 		mypoly(display, shoel2[:2], blk)
 		mypoly(display, shoer1[:4], blk)
 		mypoly(display, shoer2[:2], blk)
+	}
+	if false {
 		mypoly(display, tick1[:4], dots)
 		mypoly(display, tick2[:4], dots)
 		mypoly(display, tick3[:4], dots)
