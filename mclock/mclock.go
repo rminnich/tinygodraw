@@ -258,11 +258,11 @@ func redraw(display displayer) {
 		/* outline the color-filled areas */
 		mypoly(display, head[27*2:], blk) /* face */
 	}
-	if false {
-		mypoly(display, tongue[:9], blk)
-		mypoly(display, pants[:26], blk)
-		mypoly(display, buttonl[:7], blk)
-		mypoly(display, buttonr[:7], blk)
+	if true {
+		mypoly(display, tongue, blk)
+		mypoly(display, pants, blk)
+		mypoly(display, buttonl, blk)
+		mypoly(display, buttonr, blk)
 	}
 	if true {
 		mypoly(display, eyel, blk)
@@ -281,28 +281,29 @@ func redraw(display displayer) {
 	if true {
 		mypoly(display, tail, blk)
 	}
-	if false {
-		mypoly(display, cuffl[:4], blk)
-		mypoly(display, cuffr[:3], blk)
+	if false { // not seeing them.
+		mypoly(display, cuffl, blk)
+		mypoly(display, cuffr, blk)
 	}
-	if false {
-		mypoly(display, shoel1[:4], blk)
-		mypoly(display, shoel2[:2], blk)
-		mypoly(display, shoer1[:4], blk)
-		mypoly(display, shoer2[:2], blk)
+	if true {
+		mypoly(display, shoel1, red)
+		mypoly(display, shoel2, red)
+		mypoly(display, shoer1, red)
+		mypoly(display, shoer2, red)
 	}
-	if false {
-		mypoly(display, tick1[:4], dots)
-		mypoly(display, tick2[:4], dots)
-		mypoly(display, tick3[:4], dots)
-		mypoly(display, tick4[:4], dots)
-		mypoly(display, tick5[:4], dots)
-		mypoly(display, tick7[:4], dots)
-		mypoly(display, tick8[:4], dots)
-		mypoly(display, tick9[:4], dots)
-		mypoly(display, tick10[:4], dots)
-		mypoly(display, tick11[:4], dots)
-		mypoly(display, tick12[:4], dots)
+	// not visible.
+	if true {
+		mypoly(display, tick1, dots)
+		mypoly(display, tick2, dots)
+		mypoly(display, tick3, dots)
+		mypoly(display, tick4, dots)
+		mypoly(display, tick5, dots)
+		mypoly(display, tick7, dots)
+		mypoly(display, tick8, dots)
+		mypoly(display, tick9, dots)
+		mypoly(display, tick10, dots)
+		mypoly(display, tick11, dots)
+		mypoly(display, tick12, dots)
 	}
 	if true {
 
